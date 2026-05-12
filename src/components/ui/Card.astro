@@ -1,0 +1,35 @@
+---
+interface Props {
+  class?: string;
+  interactive?: boolean;
+  style?: string;
+}
+
+const { class: className, interactive = false, style } = Astro.props;
+---
+
+<div
+  class:list={[
+    'bg-bg-card border border-border rounded-xl p-6',
+    interactive && 'card-interactive',
+    className,
+  ]}
+  style={style}
+>
+  <slot />
+</div>
+
+<style>
+  .card-interactive {
+    transition:
+      border-color 300ms ease,
+      box-shadow 300ms ease,
+      transform 300ms ease;
+  }
+
+  .card-interactive:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(0, 230, 197, 0.08);
+    transform: scale(1.02);
+  }
+</style>

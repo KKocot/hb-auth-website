@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #00e6c5;
+  --color-accent-hover: #00ccb0;
+  --color-bg: #0c0c0c;
+  --color-bg-card: #1c1c1c;
+  --color-bg-nav: rgba(12, 12, 12, 0.8);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+  --font-sans: 'Geist Variable', system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Fira Code', monospace;
+}

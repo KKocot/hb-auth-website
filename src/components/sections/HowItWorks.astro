@@ -1,0 +1,213 @@
+---
+import { Code } from 'astro:components';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Install & Initialize',
+    description:
+      'Install from npm. Create a chain instance and initialize the client. The WebWorker spins up automatically.',
+    code: `import { createHiveChain } from '@hiveio/wax';
+import { OnlineClient } from '@hiveio/hb-auth';
+
+const chain = await createHiveChain();
+const client = new OnlineClient();
+await client.initialize(chain);`,
+  },
+  {
+    number: '02',
+    title: 'Register & Authenticate',
+    description:
+      'Register your key once — it\'s encrypted and stored in IndexedDB. Authenticate with your password to start a session.',
+    code: `await client.register(
+  'username', 'password', wifKey, 'posting'
+);
+
+await client.authenticate(
+  'username', 'password', 'posting'
+);`,
+  },
+  {
+    number: '03',
+    title: 'Sign Transactions',
+    description:
+      'Sign transactions directly or use the Wax SDK provider. Keys never leave the WebWorker context.',
+    code: `import { HBAuthProvider } from '@hiveio/signers-hb-auth';
+
+const signer = HBAuthProvider.for(
+  client, 'username', 'posting'
+);
+// Use with wax transaction builder`,
+  },
+];
+---
+
+<section id="how-it-works" class="relative px-6 py-24 md:py-32">
+  <!-- Background accent glow -->
+  <div
+    class="pointer-events-none absolute inset-0"
+    aria-hidden="true"
+  >
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 h-px w-3/4 bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+  </div>
+
+  <div class="mx-auto max-w-[75rem]">
+    <!-- Section header -->
+    <div class="mb-20 text-center">
+      <span class="font-mono text-sm tracking-widest text-accent uppercase">
+        How it works
+      </span>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-text md:text-5xl">
+        Three steps to secure authentication
+      </h2>
+    </div>
+
+    <!-- Steps -->
+    <div class="flex flex-col gap-24 md:gap-32">
+      {steps.map((step, index) => {
+        const isEven = index % 2 === 0;
+        return (
+          <div
+            class:list={[
+              'hiw-step group grid items-center gap-10 md:gap-16 lg:grid-cols-2',
+              isEven ? 'hiw-step--from-left' : 'hiw-step--from-right',
+            ]}
+          >
+            {/* Text content */}
+            <div
+              class:list={[
+                'flex flex-col gap-4',
+                !isEven && 'lg:order-2',
+              ]}
+            >
+              {/* Step number */}
+              <div class="relative">
+                <span
+                  class="absolute -top-8 -left-2 select-none font-mono text-6xl font-bold text-accent/15 md:-top-12 md:-left-4 md:text-8xl"
+                  aria-hidden="true"
+                >
+                  {step.number}
+                </span>
+                <div class="relative flex items-center gap-4">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-accent/40 font-mono text-sm font-semibold text-accent">
+                    {step.number}
+                  </span>
+                  <h3 class="text-xl font-semibold text-text md:text-2xl">
+                    {step.title}
+                  </h3>
+                </div>
+              </div>
+              <p class="max-w-lg pl-14 text-text-muted leading-relaxed">
+                {step.description}
+              </p>
+            </div>
+
+            {/* Code block */}
+            <div
+              class:list={[
+                'hiw-code-block overflow-hidden rounded-xl border border-border',
+                !isEven && 'lg:order-1',
+              ]}
+            >
+              {/* Tab bar */}
+              <div class="flex items-center gap-2 border-b border-border bg-[#111] px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-[#ff5f57] opacity-60" />
+                <span class="h-3 w-3 rounded-full bg-[#febc2e] opacity-60" />
+                <span class="h-3 w-3 rounded-full bg-[#28c840] opacity-60" />
+                <span class="ml-3 font-mono text-xs text-text-muted">
+                  step-{step.number}.ts
+                </span>
+              </div>
+              {/* Code */}
+              <div class="bg-[#111] p-4 text-sm [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_code]:!text-sm">
+                <Code code={step.code} lang="typescript" theme="github-dark" />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Initial hidden states for scroll animation */
+  .hiw-step {
+    opacity: 0;
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hiw-step--from-left {
+    transform: translateX(-3rem);
+  }
+
+  .hiw-step--from-right {
+    transform: translateX(3rem);
+  }
+
+  /* Visible state */
+  .hiw-step.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Code block hover glow */
+  .hiw-code-block {
+    transition:
+      border-color 300ms ease,
+      box-shadow 300ms ease;
+  }
+
+  .group:hover .hiw-code-block {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 30px rgba(0, 230, 197, 0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hiw-step {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .hiw-step--from-left,
+    .hiw-step--from-right {
+      transform: none;
+    }
+  }
+
+  /* Responsive: on mobile, always slide from bottom instead of left/right */
+  @media (max-width: 767px) {
+    .hiw-step--from-left,
+    .hiw-step--from-right {
+      transform: translateY(2rem);
+    }
+
+    .hiw-step.is-visible {
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px',
+    }
+  );
+
+  document.querySelectorAll('.hiw-step').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

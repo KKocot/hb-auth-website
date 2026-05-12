@@ -1,0 +1,33 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'HB-Auth — Secure Blockchain Authentication',
+  description = 'Browser-based authentication library for Hive blockchain applications. Secure key management with WebWorkers and encrypted IndexedDB storage.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark scroll-smooth" style="scroll-padding-top: 5rem; color-scheme: dark;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content="HB-Auth — Secure Blockchain Authentication" />
+    <meta property="og:description" content="Browser-based authentication library for Hive blockchain applications. Secure key management with WebWorkers and encrypted IndexedDB storage." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0c0c0c" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-bg text-text font-sans antialiased">
+    <slot />
+  </body>
+</html>

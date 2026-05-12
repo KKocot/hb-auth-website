@@ -1,0 +1,228 @@
+---
+// Navbar — sticky navigation with mobile hamburger menu
+---
+
+<nav
+  class="fixed top-0 left-0 right-0 z-50 border-b border-border bg-bg-nav backdrop-blur-md"
+>
+  <div class="mx-auto flex max-w-[75rem] items-center justify-between px-6 py-4">
+    <!-- Logo -->
+    <a href="/" class="font-mono text-xl font-bold text-accent">HB-Auth</a>
+
+    <!-- Desktop links -->
+    <ul class="hidden items-center gap-8 md:flex">
+      <li>
+        <a
+          href="#features"
+          class="text-sm text-text-muted transition-colors duration-200 hover:text-text"
+        >
+          Features
+        </a>
+      </li>
+      <li>
+        <a
+          href="#how-it-works"
+          class="text-sm text-text-muted transition-colors duration-200 hover:text-text"
+        >
+          How It Works
+        </a>
+      </li>
+      <li>
+        <a
+          href="#architecture"
+          class="text-sm text-text-muted transition-colors duration-200 hover:text-text"
+        >
+          Architecture
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://gitlab.syncad.com/hive/hb-auth"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors duration-200 hover:text-text"
+        >
+          GitLab
+          <!-- External link arrow icon -->
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 17L17 7" />
+            <path d="M7 7h10v10" />
+          </svg>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Desktop CTA -->
+    <a
+      href="#how-it-works"
+      class="hidden rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-bg transition-colors duration-200 hover:bg-accent-hover md:inline-flex"
+    >
+      Get Started
+    </a>
+
+    <!-- Mobile hamburger button -->
+    <button
+      id="nav-toggle"
+      type="button"
+      class="inline-flex items-center justify-center rounded-lg p-2 text-text-muted transition-colors duration-200 hover:text-text md:hidden"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-mobile-menu"
+    >
+      <!-- Hamburger icon (shown when menu is closed) -->
+      <svg
+        id="nav-icon-open"
+        aria-hidden="true"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <!-- Close icon (shown when menu is open) -->
+      <svg
+        id="nav-icon-close"
+        class="hidden"
+        aria-hidden="true"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="nav-mobile-menu"
+    class="hidden border-t border-border md:hidden"
+  >
+    <ul class="mx-auto flex max-w-[75rem] flex-col gap-1 px-6 py-4">
+      <li>
+        <a
+          href="#features"
+          class="nav-mobile-link block rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+        >
+          Features
+        </a>
+      </li>
+      <li>
+        <a
+          href="#how-it-works"
+          class="nav-mobile-link block rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+        >
+          How It Works
+        </a>
+      </li>
+      <li>
+        <a
+          href="#architecture"
+          class="nav-mobile-link block rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+        >
+          Architecture
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://gitlab.syncad.com/hive/hb-auth"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-mobile-link flex items-center gap-1.5 rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+        >
+          GitLab
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 17L17 7" />
+            <path d="M7 7h10v10" />
+          </svg>
+        </a>
+      </li>
+      <li class="pt-2">
+        <a
+          href="#how-it-works"
+          class="nav-mobile-link block rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-bg transition-colors duration-200 hover:bg-accent-hover"
+        >
+          Get Started
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Spacer to offset fixed navbar height -->
+<div class="h-[4.5rem]"></div>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-mobile-menu');
+  const iconOpen = document.getElementById('nav-icon-open');
+  const iconClose = document.getElementById('nav-icon-close');
+  const mobileLinks = document.querySelectorAll('.nav-mobile-link');
+
+  function closeMenu() {
+    menu?.classList.add('hidden');
+    iconOpen?.classList.remove('hidden');
+    iconClose?.classList.add('hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+
+    if (isOpen) {
+      closeMenu();
+    } else {
+      menu?.classList.remove('hidden');
+      iconOpen?.classList.add('hidden');
+      iconClose?.classList.remove('hidden');
+      toggle?.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  // Close mobile menu when a link is clicked
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  // Close mobile menu on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu?.classList.contains('hidden')) {
+      closeMenu();
+    }
+  });
+</script>

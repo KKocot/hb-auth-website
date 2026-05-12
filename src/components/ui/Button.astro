@@ -1,0 +1,29 @@
+---
+// Button UI component
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary';
+  class?: string;
+}
+
+const { href, variant = 'primary', class: className } = Astro.props;
+
+const base = 'inline-flex items-center justify-center rounded-lg px-6 py-3 font-semibold transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg';
+const variants = {
+  primary: 'bg-accent text-bg hover:bg-accent-hover',
+  secondary: 'border border-border text-text hover:bg-bg-card',
+};
+
+const isExternal = href?.startsWith('http');
+const externalAttrs = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{href ? (
+  <a href={href} class:list={[base, variants[variant], className]} {...externalAttrs}>
+    <slot />
+  </a>
+) : (
+  <button class:list={[base, variants[variant], className]}>
+    <slot />
+  </button>
+)}

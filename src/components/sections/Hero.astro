@@ -1,0 +1,136 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section
+  class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center overflow-hidden"
+>
+  <!-- Background: radial gradient + grid pattern -->
+  <div
+    class="pointer-events-none absolute inset-0"
+    aria-hidden="true"
+  >
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(0,230,197,0.08),transparent)]" />
+    <div
+      class="absolute inset-0 opacity-[0.03]"
+      style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 64px 64px;"
+    />
+  </div>
+
+  <!-- Badge -->
+  <div class="hero-fade-in relative z-10 mb-8">
+    <span
+      class="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1 font-mono text-xs uppercase tracking-wider text-text-muted"
+    >
+      <span class="relative flex h-2 w-2">
+        <span
+          class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"
+        ></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+      </span>
+      Open Source
+    </span>
+  </div>
+
+  <!-- Headline -->
+  <h1
+    class="hero-fade-in [animation-delay:100ms] relative z-10 mx-auto max-w-[800px] text-5xl font-bold tracking-tight text-text md:text-7xl"
+  >
+    Keys stay where they belong.
+    <br />
+    <span class="text-accent">In the vault.</span>
+  </h1>
+
+  <!-- Subheadline -->
+  <p
+    class="hero-fade-in [animation-delay:200ms] relative z-10 mx-auto mt-6 max-w-2xl text-lg text-text-muted md:text-xl"
+  >
+    Browser-based authentication for Hive blockchain. Private keys never leave
+    the WebWorker — encrypted, isolated, secure.
+  </p>
+
+  <!-- CTA buttons -->
+  <div
+    class="hero-fade-in [animation-delay:300ms] relative z-10 mt-10 flex flex-col items-center gap-4 sm:flex-row"
+  >
+    <!-- Install command -->
+    <div
+      class="flex items-center gap-2 rounded-lg border border-border bg-bg-card px-4 py-3"
+    >
+      <code id="install-cmd" class="font-mono text-sm text-accent select-all">
+        npm install @hiveio/hb-auth
+      </code>
+      <button
+        data-copy-button="install-cmd"
+        type="button"
+        class="group ml-1 cursor-pointer rounded-md p-1.5 text-text-muted transition-colors hover:bg-border hover:text-text"
+        aria-label="Copy install command"
+      >
+        <!-- Clipboard icon (default) -->
+        <svg
+          class="h-4 w-4 transition-opacity duration-200 group-data-[copied]:hidden"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9.75a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+          ></path>
+        </svg>
+        <!-- Checkmark icon (after copy) -->
+        <svg
+          class="hidden h-4 w-4 text-accent group-data-[copied]:block"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m4.5 12.75 6 6 9-13.5"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Documentation link -->
+    <Button href="https://gitlab.syncad.com/hive/hb-auth" variant="secondary">
+      View Repository
+    </Button>
+  </div>
+</section>
+
+<style>
+  @keyframes hero-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-fade-in {
+    opacity: 0;
+    animation: hero-fade-in 0.6s ease-out forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fade-in {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import '../islands/CopyButton.ts';
+</script>
