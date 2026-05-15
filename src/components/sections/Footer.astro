@@ -1,163 +1,113 @@
 ---
-// Footer — site footer with links grid
 const currentYear = new Date().getFullYear();
+const VERSION = "v1.0.0";
 ---
 
-<footer class="border-t border-border">
-  <div class="mx-auto max-w-[75rem] px-6 py-16">
-    <!-- Grid: 3 columns on desktop, stacked on mobile -->
-    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Col 1: Brand -->
-      <div class="flex flex-col gap-4">
-        <span class="font-mono text-xl font-bold text-accent">HB-Auth</span>
-        <p class="text-sm leading-relaxed text-text-muted">
-          Secure blockchain authentication library for browser-based applications.
-        </p>
-        <p class="text-sm text-text-muted">Built for Hive blockchain.</p>
-      </div>
-
-      <!-- Col 2: Project Links -->
-      <div class="flex flex-col gap-4">
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-text">Links</h3>
-        <ul class="flex flex-col gap-3">
-          <li>
-            <a
-              href="https://gitlab.syncad.com/hive/hb-auth"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors duration-200 hover:text-text"
-            >
-              GitLab Repository
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.npmjs.com/package/@hiveio/hb-auth"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors duration-200 hover:text-text"
-            >
-              npm Package
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://gitlab.syncad.com/hive/hb-auth/-/wikis/home"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors duration-200 hover:text-text"
-            >
-              Documentation
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Col 3: Hive Ecosystem -->
-      <div class="flex flex-col gap-4">
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-text">
-          Hive Ecosystem
-        </h3>
-        <ul class="flex flex-col gap-3">
-          <li>
-            <a
-              href="https://hive.io"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors duration-200 hover:text-text"
-            >
-              hive.io
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.hive.io"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors duration-200 hover:text-text"
-            >
-              developers.hive.io
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Bottom bar -->
-    <div class="mt-12 border-t border-border pt-8">
-      <p class="text-center text-sm text-text-muted">
-        &copy; {currentYear} Hive. Open Source under MIT License.
-      </p>
-    </div>
+<footer class="tmux-status" role="contentinfo">
+  <div class="tmux-status__bar">
+    <span class="tmux-status__segment"
+      ><a
+        href="https://gitlab.syncad.com/hive/hb-auth/-/releases"
+        class="tmux-status__link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`hb-auth ${VERSION} — releases on GitLab`}
+        >[hb-auth {VERSION}]</a
+      ></span
+    ><span class="tmux-status__sep" aria-hidden="true">│</span><span
+      class="tmux-status__segment"
+      >© {currentYear}</span
+    ><span class="tmux-status__sep" aria-hidden="true">│</span><a
+      href="https://gitlab.syncad.com/hive/hb-auth/-/blob/develop/LICENSE"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="tmux-status__link"
+      aria-label="MIT License — opens in new tab"
+      >MIT License</a
+    ><span class="tmux-status__sep" aria-hidden="true">│</span><a
+      href="https://hive.io"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="tmux-status__link"
+      aria-label="Hive blockchain ecosystem — opens in new tab"
+      >built for <span class="tmux-status__hive">hive</span></a
+    ><span class="tmux-status__sep" aria-hidden="true">│</span><span
+      class="tmux-status__dot"
+      aria-label="Status: online">●</span
+    >
   </div>
 </footer>
+
+<style>
+  .tmux-status {
+    background-color: var(--color-bg-surface);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    line-height: 1;
+    transition:
+      background-color var(--mode-transition, 300ms) ease,
+      border-color var(--mode-transition, 300ms) ease;
+  }
+
+  .tmux-status__bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: var(--space-2) var(--space-4);
+    min-height: 2rem;
+  }
+
+  .tmux-status__segment {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .tmux-status__sep {
+    color: var(--color-text-subtle);
+    padding-inline: var(--space-2);
+    user-select: none;
+  }
+
+  .tmux-status__link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--duration-fast) var(--ease-out-quad);
+  }
+
+  .tmux-status__link:hover,
+  .tmux-status__link:focus-visible {
+    color: var(--color-primary-bright);
+    text-shadow: var(--glow-intensity) var(--glow-color);
+  }
+
+  .tmux-status__link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  .tmux-status__hive {
+    color: var(--color-hive-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .tmux-status__dot {
+    color: var(--color-accent-success);
+    font-size: 0.625rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 40rem) {
+    .tmux-status__bar {
+      padding: var(--space-2) var(--space-3);
+      justify-content: center;
+    }
+  }
+</style>

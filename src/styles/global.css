@@ -11,4 +11,19 @@
   --color-text-muted: rgba(255, 255, 255, 0.5);
   --font-sans: 'Geist Variable', system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', 'Fira Code', monospace;
+  --color-bg-surface: #141414;
+  --color-text-subtle: rgba(255, 255, 255, 0.25);
+  --color-hive-text: #ff5070;
+  --color-accent-success: #4EBF71;
+  --color-primary-bright: #33f0d6;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --text-xs: 0.75rem;
+  --duration-fast: 150ms;
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --radius-xs: 2px;
+  --glow-intensity: 0 0 8px;
+  --glow-color: rgba(0, 230, 197, 0.3);
+  --font-weight-semibold: 600;
 }
