@@ -14,7 +14,8 @@
       <li>
         <a
           href="#features"
-          class="text-sm text-text-muted transition-colors duration-200 hover:text-text"
+          class="text-base text-text-muted transition-colors duration-200 hover:text-text"
+          data-section="features"
         >
           Features
         </a>
@@ -22,7 +23,8 @@
       <li>
         <a
           href="#how-it-works"
-          class="text-sm text-text-muted transition-colors duration-200 hover:text-text"
+          class="text-base text-text-muted transition-colors duration-200 hover:text-text"
+          data-section="how-it-works"
         >
           How It Works
         </a>
@@ -30,7 +32,8 @@
       <li>
         <a
           href="#architecture"
-          class="text-sm text-text-muted transition-colors duration-200 hover:text-text"
+          class="text-base text-text-muted transition-colors duration-200 hover:text-text"
+          data-section="architecture"
         >
           Architecture
         </a>
@@ -43,7 +46,7 @@
         href="https://gitlab.syncad.com/hive/hb-auth"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-accent transition-opacity duration-200 hover:opacity-70"
+        class="text-text-muted transition-colors duration-200 hover:text-accent"
         aria-label="GitLab repository"
       >
         <svg width="28" height="28" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 30.4L21.3 14.1H10.7L16 30.4Z"/><path d="M16 30.4L10.7 14.1H2.4L16 30.4Z" opacity="0.7"/><path d="M2.4 14.1L0.5 20.1C0.3 20.7 0.5 21.4 1 21.8L16 30.4L2.4 14.1Z" opacity="0.5"/><path d="M2.4 14.1H10.7L7.4 3.9C7.2 3.3 6.4 3.3 6.2 3.9L2.4 14.1Z"/><path d="M16 30.4L21.3 14.1H29.6L16 30.4Z" opacity="0.7"/><path d="M29.6 14.1L31.5 20.1C31.7 20.7 31.5 21.4 31 21.8L16 30.4L29.6 14.1Z" opacity="0.5"/><path d="M29.6 14.1H21.3L24.6 3.9C24.8 3.3 25.6 3.3 25.8 3.9L29.6 14.1Z"/></svg>
@@ -52,7 +55,7 @@
         href="https://www.npmjs.com/package/@hiveio/hb-auth"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-accent transition-opacity duration-200 hover:opacity-70"
+        class="text-text-muted transition-colors duration-200 hover:text-accent"
         aria-label="npm package"
       >
         <svg
@@ -122,7 +125,8 @@
       <li>
         <a
           href="#features"
-          class="nav-mobile-link block rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+          class="nav-mobile-link block rounded-lg px-4 py-3 text-base text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+          data-section="features"
         >
           Features
         </a>
@@ -130,7 +134,8 @@
       <li>
         <a
           href="#how-it-works"
-          class="nav-mobile-link block rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+          class="nav-mobile-link block rounded-lg px-4 py-3 text-base text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+          data-section="how-it-works"
         >
           How It Works
         </a>
@@ -138,7 +143,8 @@
       <li>
         <a
           href="#architecture"
-          class="nav-mobile-link block rounded-lg px-4 py-3 text-sm text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+          class="nav-mobile-link block rounded-lg px-4 py-3 text-base text-text-muted transition-colors duration-200 hover:bg-bg-card hover:text-text"
+          data-section="architecture"
         >
           Architecture
         </a>
@@ -148,7 +154,7 @@
           href="https://gitlab.syncad.com/hive/hb-auth"
           target="_blank"
           rel="noopener noreferrer"
-          class="nav-mobile-link text-accent transition-opacity duration-200 hover:opacity-70"
+          class="nav-mobile-link text-text-muted transition-colors duration-200 hover:text-accent"
           aria-label="GitLab repository"
         >
           <svg
@@ -165,7 +171,7 @@
           href="https://www.npmjs.com/package/@hiveio/hb-auth"
           target="_blank"
           rel="noopener noreferrer"
-          class="nav-mobile-link text-accent transition-opacity duration-200 hover:opacity-70"
+          class="nav-mobile-link text-text-muted transition-colors duration-200 hover:text-accent"
           aria-label="npm package"
         >
           <svg
@@ -220,10 +226,45 @@
     });
   });
 
-  // Close mobile menu on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !menu?.classList.contains('hidden')) {
       closeMenu();
     }
   });
+
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('a[data-section]');
+
+  function setActive(sectionId: string) {
+    navLinks.forEach((link) => {
+      if (link.dataset.section === sectionId) {
+        link.classList.add('text-accent', 'font-medium');
+        link.classList.remove('text-text-muted');
+      } else {
+        link.classList.remove('text-accent', 'font-medium');
+        link.classList.add('text-text-muted');
+      }
+    });
+  }
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      const section = link.dataset.section;
+      if (section) setActive(section);
+    });
+  });
+
+  const sections = document.querySelectorAll<HTMLElement>('#features, #how-it-works, #architecture');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id);
+        }
+      });
+    },
+    { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+  );
+
+  sections.forEach((section) => observer.observe(section));
 </script>
