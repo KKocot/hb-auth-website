@@ -1,22 +1,17 @@
 ---
-const currentYear = new Date().getFullYear();
-const VERSION = "v1.0.0";
 ---
 
 <footer class="tmux-status" role="contentinfo">
   <div class="tmux-status__bar">
     <span class="tmux-status__segment"
       ><a
-        href="https://gitlab.syncad.com/hive/hb-auth/-/releases"
+        href="https://gitlab.syncad.com/hive/hb-auth"
         class="tmux-status__link"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`hb-auth ${VERSION} — releases on GitLab`}
-        >[hb-auth {VERSION}]</a
+        aria-label="hb-auth — source on GitLab"
+        >[hb-auth]</a
       ></span
-    ><span class="tmux-status__sep" aria-hidden="true">│</span><span
-      class="tmux-status__segment"
-      >© {currentYear}</span
     ><span class="tmux-status__sep" aria-hidden="true">│</span><a
       href="https://gitlab.syncad.com/hive/hb-auth/-/blob/develop/LICENSE"
       target="_blank"
@@ -30,10 +25,21 @@ const VERSION = "v1.0.0";
       rel="noopener noreferrer"
       class="tmux-status__link"
       aria-label="Hive blockchain ecosystem — opens in new tab"
-      >built for <span class="tmux-status__hive">hive</span></a
-    ><span class="tmux-status__sep" aria-hidden="true">│</span><span
-      class="tmux-status__dot"
-      aria-label="Status: online">●</span
+      >Hive</a
+    ><span class="tmux-status__sep" aria-hidden="true">│</span><a
+      href="https://www.npmjs.com/package/@hiveio/hb-auth"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="tmux-status__link"
+      aria-label="hb-auth on npm — opens in new tab"
+      >npm</a
+    ><span class="tmux-status__sep" aria-hidden="true">│</span><a
+      href="https://blockchainwares.com.pl/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="tmux-status__link"
+      aria-label="Blockchain Wares — opens in new tab"
+      >Blockchain Wares</a
     >
   </div>
 </footer>
@@ -41,7 +47,7 @@ const VERSION = "v1.0.0";
 <style>
   .tmux-status {
     background-color: var(--color-bg-surface);
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--border-subtle);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: 0.04em;
@@ -78,7 +84,9 @@ const VERSION = "v1.0.0";
     color: var(--color-text-muted);
     text-decoration: none;
     white-space: nowrap;
-    transition: color var(--duration-fast) var(--ease-out-quad);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      text-shadow var(--duration-fast) var(--ease-out);
   }
 
   .tmux-status__link:hover,
@@ -93,20 +101,10 @@ const VERSION = "v1.0.0";
     border-radius: var(--radius-xs);
   }
 
-  .tmux-status__hive {
-    color: var(--color-hive-text);
-    font-weight: var(--font-weight-semibold);
-  }
-
-  .tmux-status__dot {
-    color: var(--color-accent-success);
-    font-size: 0.625rem;
-    line-height: 1;
-  }
-
   @media (max-width: 40rem) {
     .tmux-status__bar {
       padding: var(--space-2) var(--space-3);
+      gap: 0.25rem 0;
       justify-content: center;
     }
   }

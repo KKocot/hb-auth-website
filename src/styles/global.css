@@ -26,4 +26,6 @@
   --glow-intensity: 0 0 8px;
   --glow-color: rgba(0, 230, 197, 0.3);
   --font-weight-semibold: 600;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -7,7 +7,15 @@
 >
   <div class="mx-auto flex max-w-[75rem] items-center justify-between px-6 py-4">
     <!-- Logo -->
-    <a href="/" class="font-mono text-xl font-bold text-accent">HB-Auth</a>
+    <a href="/" class="flex items-center gap-2 font-mono text-xl font-bold text-accent">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 1L2 3.5V7C2 10.87 4.56 14.43 8 15.5C11.44 14.43 14 10.87 14 7V3.5L8 1Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <rect x="5.5" y="7.5" width="5" height="4" rx="0.8" fill="currentColor"/>
+        <path d="M6.5 7.5V6C6.5 5.17 7.17 4.5 8 4.5C8.83 4.5 9.5 5.17 9.5 6V7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        <circle cx="8" cy="9.2" r="0.7" fill="var(--color-bg-base, #0c0c0c)"/>
+      </svg>
+      HB-Auth
+    </a>
 
     <!-- Desktop links -->
     <ul class="hidden items-center gap-8 md:flex">
@@ -189,8 +197,6 @@
   </div>
 </nav>
 
-<!-- Spacer to offset fixed navbar height -->
-<div class="h-[4.5rem]"></div>
 
 <script>
   const toggle = document.getElementById('nav-toggle');
@@ -253,13 +259,24 @@
     });
   });
 
-  const sections = document.querySelectorAll<HTMLElement>('#features, #how-it-works, #architecture');
+  const sections = document.querySelectorAll<HTMLElement>('#hero, #features, #how-it-works, #architecture');
+
+  function clearActive() {
+    navLinks.forEach((link) => {
+      link.classList.remove('text-accent', 'font-medium');
+      link.classList.add('text-text-muted');
+    });
+  }
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActive(entry.target.id);
+          if (entry.target.id === 'hero') {
+            clearActive();
+          } else {
+            setActive(entry.target.id);
+          }
         }
       });
     },

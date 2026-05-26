@@ -1,28 +1,18 @@
 ---
 import { Code } from 'astro:components';
-import Card from '../ui/Card.astro';
 
 const waxCode = `import { HBAuthProvider } from '@hiveio/signers-hb-auth';
+// Full TypeScript definitions & autocomplete
 
-const signer = HBAuthProvider.for(
-  client, 'username', 'posting'
-);
-// One line. Full signing capability.`;
+const signer: IOnlineSignerProvider =
+  HBAuthProvider.for(
+    client, 'username', 'posting'
+  );
 
-const tsCode = `interface OnlineClient {
-  initialize(chain: IHiveChainInterface): Promise<void>;
-  register(
-    username: string,
-    password: string,
-    wifKey:   string,
-    role:     'posting' | 'active' | 'owner'
-  ): Promise<boolean>;
-  authenticate(
-    username: string,
-    password: string,
-    role:     'posting' | 'active' | 'owner'
-  ): Promise<boolean>;
-}`;
+// Type-safe transaction building
+const tx = await chain.createTransaction();
+tx.pushOperation({ vote: { ... } });
+await tx.sign(signer); // Keys never leave Worker`;
 
 const terminalLines = [
   { text: '> MainThread: request sign(tx)', accent: false },
@@ -33,168 +23,149 @@ const terminalLines = [
   { text: '> MainThread: broadcast(signed_tx)', accent: false },
   { text: '> [key never crossed the boundary]', accent: 'full' },
 ];
-
-const smallCards = [
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h2a5 5 0 0 1 0 10h-2m-6 0H7A5 5 0 0 1 7 7h2"/><line x1="8" x2="16" y1="12" y2="12"/></svg>`,
-    title: 'SharedWorker Sync',
-    description: 'One session, all tabs. Survives refresh.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/><circle cx="7" cy="7" r="1.5" fill="#4EBF71" stroke="none"/><circle cx="17" cy="7" r="1.5" fill="#febc2e" stroke="none"/></svg>`,
-    title: 'Online & Offline',
-    description: 'On-chain verification or local-only mode.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.02.76 1.85 1.75 1.97V16h.5v-2.03A2.001 2.001 0 0 0 12 10z"/><path d="M4 16V8a8 8 0 1 1 16 0v8"/><path d="M18 12a6 6 0 0 0-12 0"/><path d="M2 16h20"/></svg>`,
-    title: 'Passkey & Biometric',
-    description: 'WebAuthn PRF. Fingerprint or face to unlock.',
-  },
-];
 ---
 
-<section id="features" class="py-24 px-6">
-  <div class="mx-auto max-w-6xl">
+<section id="features" class="relative py-24 px-6 md:py-32 overflow-hidden">
+  {/* Background radial glow */}
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(0,230,197,0.04),transparent)]" />
+  </div>
+
+  <div class="relative mx-auto max-w-[75rem]">
     {/* Section header */}
-    <div class="mx-auto mb-16 max-w-3xl text-center">
-      <span class="mb-4 inline-block font-mono text-sm tracking-widest text-accent uppercase">
-        FEATURES
-      </span>
+    <div class="feat-reveal mx-auto mb-16 max-w-3xl text-center">
       <h2 class="text-3xl font-bold md:text-5xl text-text">
         Built for security-first applications
       </h2>
+      <p class="mt-4 text-lg text-text-muted">
+        Enterprise-grade authentication primitives that keep private keys where they belong — on the user's device.
+      </p>
     </div>
 
     {/* Bento grid */}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
 
-      {/* === HERO CARD: Zero Key Exposure === */}
+      {/* === Card 1: Zero Key Exposure — hero card === */}
       <div
-        class="feature-card hero-card relative col-span-1 lg:col-span-2 overflow-hidden rounded-xl border border-accent/30 bg-bg-card p-8 md:p-10 opacity-0"
-        style="--stagger-delay: 0ms; --translate-y: 24px"
+        class="feature-card hero-card feat-card-hover col-span-1 md:col-span-7 rounded-xl border border-accent/40 bg-bg-card p-6 md:p-8 relative opacity-0"
+        style="--stagger-delay: 0ms; --translate-y: 24px; box-shadow: 0 0 30px rgba(0,230,197,0.08);"
       >
-        {/* Border beam pseudo-element overlay */}
-        <div class="beam-container" aria-hidden="true"></div>
-
-        {/* Radial gradient background */}
-        <div
-          class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_80%_50%,rgba(0,230,197,0.04),transparent)]"
-          aria-hidden="true"
-        />
-
-        <div class="relative flex flex-col lg:flex-row gap-8 lg:gap-10">
-          {/* Left: Text content */}
-          <div class="flex flex-col justify-center lg:w-1/2">
-            <span class="mb-4 inline-flex w-fit items-center rounded-full border border-accent/20 bg-accent/10 px-3 py-1 font-mono text-xs text-accent uppercase">
-              CORE SECURITY MODEL
+        <div class="flex items-center gap-3 mb-4">
+          <svg class="h-6 w-6 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            <circle cx="12" cy="16" r="1" />
+          </svg>
+          <h3 class="text-xl font-semibold text-text">Zero Key Exposure</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-text-muted mb-6 max-w-lg">
+          The core security model. Private keys never leave the WebWorker — encrypted by Beekeeper WASM, fully isolated from main thread. Your app cannot access them.
+        </p>
+        <div class="overflow-hidden rounded-lg border border-border">
+          <div class="flex items-center gap-2 border-b border-border bg-[#111] px-4 py-2.5">
+            <span class="h-3 w-3 rounded-full bg-[#ff5f57] opacity-60" />
+            <span class="h-3 w-3 rounded-full bg-[#febc2e] opacity-60" />
+            <span class="h-3 w-3 rounded-full bg-[#28c840] opacity-60" />
+            <span class="ml-3 font-mono text-xs text-text-muted">
+              security-flow.log
             </span>
-            <h3 class="mb-3 text-2xl font-bold md:text-3xl text-text">
-              Zero Key Exposure
-            </h3>
-            <p class="text-sm leading-relaxed text-text-muted md:text-base">
-              Private keys never leave the WebWorker. Encrypted by Beekeeper WASM, isolated from main thread JavaScript. Your app literally cannot access them.
-            </p>
           </div>
-
-          {/* Right: Terminal */}
-          <div class="lg:w-1/2">
-            <div class="overflow-hidden rounded-lg border border-border">
-              {/* Tab bar */}
-              <div class="flex items-center gap-2 border-b border-border bg-[#111] px-4 py-2.5">
-                <span class="h-3 w-3 rounded-full bg-[#ff5f57] opacity-60" />
-                <span class="h-3 w-3 rounded-full bg-[#febc2e] opacity-60" />
-                <span class="h-3 w-3 rounded-full bg-[#28c840] opacity-60" />
-                <span class="ml-3 font-mono text-xs text-text-muted">
-                  security-flow.log
+          <div class="bg-[#111] p-4 md:p-5 min-h-[12rem]">
+            <pre
+              id="terminal-output"
+              class="font-mono text-xs leading-relaxed text-text-muted"
+              aria-label="Security flow terminal output showing that private keys never cross the WebWorker boundary"
+              data-terminal-lines={JSON.stringify(terminalLines)}
+            >{/* Lines rendered by JS typing animation */}<noscript>{terminalLines.map((line) => (
+                <span class={line.accent === 'full' ? 'text-accent' : ''}>
+                  {line.text}{'\n'}
                 </span>
-              </div>
-              {/* Terminal content */}
-              <div class="bg-[#111] p-4 md:p-5 min-h-[12rem]">
-                <pre
-                  id="terminal-output"
-                  class="font-mono text-xs leading-relaxed text-text-muted"
-                  aria-label="Security flow terminal output showing that private keys never cross the WebWorker boundary"
-                  data-terminal-lines={JSON.stringify(terminalLines)}
-                >{/* Lines rendered by JS typing animation */}<noscript>{terminalLines.map((line) => (
-                    <span class={line.accent === 'full' ? 'text-accent' : ''}>
-                      {line.text}{'\n'}
-                    </span>
-                  ))}</noscript></pre>
-              </div>
-            </div>
+              ))}</noscript></pre>
           </div>
         </div>
       </div>
 
-      {/* === MEDIUM LEFT: Wax SDK Integration === */}
+      {/* === Card 2: Wax SDK + TypeScript (merged) === */}
       <div
-        class="feature-card opacity-0"
-        style="--stagger-delay: 150ms; --translate-y: 24px"
+        class="feature-card feat-card-hover col-span-1 md:col-span-5 rounded-xl border border-border bg-bg-card p-6 md:p-8 opacity-0"
+        style="--stagger-delay: 120ms; --translate-y: 24px"
       >
-        <Card interactive>
-          <div class="flex flex-col h-full">
-            <span class="mb-3 font-mono text-xs text-accent">Drop-in signer</span>
-            <h3 class="mb-4 text-lg font-semibold text-text">Wax SDK Integration</h3>
-            <div class="overflow-hidden rounded-lg border border-border">
-              <div class="flex items-center gap-2 border-b border-border bg-[#111] px-4 py-2.5">
-                <span class="h-3 w-3 rounded-full bg-[#ff5f57] opacity-60" />
-                <span class="h-3 w-3 rounded-full bg-[#febc2e] opacity-60" />
-                <span class="h-3 w-3 rounded-full bg-[#28c840] opacity-60" />
-                <span class="ml-3 font-mono text-xs text-text-muted">signer.ts</span>
-              </div>
-              <div class="bg-[#111] p-4 text-sm [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_code]:!text-sm">
-                <Code code={waxCode} lang="typescript" theme="github-dark" />
-              </div>
-            </div>
-            <p class="mt-3 text-xs text-text-muted">
-              Compatible with @hiveio/wax transaction builder
-            </p>
+        <div class="flex items-center gap-3 mb-1">
+          <svg class="h-6 w-6 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+          <h3 class="text-xl font-semibold text-text">Wax SDK + TypeScript</h3>
+        </div>
+        <p class="mt-2 text-sm leading-relaxed text-text-muted mb-6">
+          Drop-in signer provider for @hiveio/wax with strict types and full autocomplete out of the box.
+        </p>
+        <div class="overflow-hidden rounded-lg border border-border">
+          <div class="flex items-center gap-2 border-b border-border bg-[#111] px-4 py-2.5">
+            <span class="h-3 w-3 rounded-full bg-[#ff5f57] opacity-60" />
+            <span class="h-3 w-3 rounded-full bg-[#febc2e] opacity-60" />
+            <span class="h-3 w-3 rounded-full bg-[#28c840] opacity-60" />
+            <span class="ml-3 font-mono text-xs text-text-muted">signer.ts</span>
           </div>
-        </Card>
+          <div class="bg-[#111] p-4 text-sm [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_code]:!text-sm">
+            <Code code={waxCode} lang="typescript" theme="github-dark" />
+          </div>
+        </div>
       </div>
 
-      {/* === MEDIUM RIGHT: TypeScript First === */}
+      {/* === Card 3: Session-Based Auth === */}
       <div
-        class="feature-card opacity-0"
-        style="--stagger-delay: 250ms; --translate-y: 24px"
+        class="feature-card feat-card-hover col-span-1 md:col-span-4 rounded-xl border border-border bg-bg-card p-6 md:p-8 opacity-0"
+        style="--stagger-delay: 220ms; --translate-y: 24px"
       >
-        <Card interactive>
-          <div class="flex flex-col h-full">
-            <span class="mb-3 font-mono text-xs text-accent">Strict types</span>
-            <h3 class="mb-4 text-lg font-semibold text-text">TypeScript First</h3>
-            <div class="overflow-hidden rounded-lg border border-border">
-              <div class="flex items-center gap-2 border-b border-border bg-[#111] px-4 py-2.5">
-                <span class="h-3 w-3 rounded-full bg-[#ff5f57] opacity-60" />
-                <span class="h-3 w-3 rounded-full bg-[#febc2e] opacity-60" />
-                <span class="h-3 w-3 rounded-full bg-[#28c840] opacity-60" />
-                <span class="ml-3 font-mono text-xs text-text-muted">types.d.ts</span>
-              </div>
-              <div class="bg-[#111] p-4 text-sm [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_code]:!text-sm">
-                <Code code={tsCode} lang="typescript" theme="github-dark" />
-              </div>
-            </div>
-            <p class="mt-3 text-xs text-text-muted">
-              Full type definitions. Autocomplete out of the box.
-            </p>
-          </div>
-        </Card>
+        <div class="flex items-center gap-3 mb-4">
+          <svg class="h-6 w-6 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          <h3 class="text-xl font-semibold text-text">Session-Based Auth</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-text-muted">
+          One session synced across all tabs via SharedWorker. Survives page refresh. No repeated logins.
+        </p>
       </div>
 
-      {/* === SMALL CARDS ROW === */}
-      <div class="col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {smallCards.map((card, i) => (
-          <div
-            class="feature-card opacity-0"
-            data-size="small"
-            style={`--stagger-delay: ${400 + i * 50}ms; --translate-y: 16px`}
-          >
-            <Card interactive class="h-full !p-4 md:!p-5">
-              <div class="mb-3 text-accent" set:html={card.icon} />
-              <h3 class="mb-1 text-sm font-semibold text-text">{card.title}</h3>
-              <p class="text-xs text-text-muted">{card.description}</p>
-            </Card>
-          </div>
-        ))}
+      {/* === Card 4: Role-Based Access === */}
+      <div
+        class="feature-card feat-card-hover col-span-1 md:col-span-4 rounded-xl border border-border bg-bg-card p-6 md:p-8 opacity-0"
+        style="--stagger-delay: 320ms; --translate-y: 24px"
+      >
+        <div class="flex items-center gap-3 mb-4">
+          <svg class="h-6 w-6 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <h3 class="text-xl font-semibold text-text">Role-Based Access</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-text-muted">
+          Granular key roles — posting, active, owner. Each operation uses the minimum authority required.
+        </p>
+      </div>
+
+      {/* === Card 5: Built for Hive === */}
+      <div
+        class="feature-card feat-card-hover col-span-1 md:col-span-4 rounded-xl border border-border bg-bg-card p-6 md:p-8 opacity-0"
+        style="--stagger-delay: 420ms; --translate-y: 24px"
+      >
+        <div class="flex items-center gap-3 mb-4">
+          <svg class="h-6 w-6 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2l5.196 3v6L12 14 6.804 11V5z" />
+            <path d="M12 14v8" />
+            <path d="M6.804 11L2 13.5V19l4.804 3L12 19" />
+            <path d="M17.196 11L22 13.5V19l-4.804 3L12 19" />
+          </svg>
+          <h3 class="text-xl font-semibold text-text">Built for Hive</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-text-muted">
+          Native Hive blockchain integration. On-chain verification when connected, local-only mode when offline.
+        </p>
       </div>
 
     </div>
@@ -202,58 +173,25 @@ const smallCards = [
 </section>
 
 <style>
-  /* === @property registration for beam angle === */
-  @property --beam-angle {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: 0deg;
+  /* === Scroll-triggered reveal (consistent with Architecture .arch-reveal) === */
+  .feat-reveal {
+    opacity: 0;
+    transform: translateY(1.5rem);
   }
 
-  /* === Border beam effect === */
-  .hero-card {
-    position: relative;
-    isolation: isolate;
+  .feat-reveal.is-visible {
+    animation: feat-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--stagger-delay, 0ms);
   }
 
-  .beam-container {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .beam-container::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: conic-gradient(
-      from var(--beam-angle),
-      transparent 80%,
-      rgba(0, 230, 197, 0.6) 90%,
-      transparent 100%
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    animation: beam-rotate 6s linear infinite;
-  }
-
-  @keyframes beam-rotate {
+  @keyframes feat-fade-in {
     to {
-      --beam-angle: 360deg;
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
-  /* === Scroll animation === */
+  /* === Card scroll animation (kept for script compatibility) === */
   :global(.feature-card) {
     transition:
       opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
@@ -267,24 +205,44 @@ const smallCards = [
     transform: translateY(0);
   }
 
-  /* Small cards get shorter duration */
-  :global(.feature-card[data-size="small"]) {
-    transition-duration: 0.5s;
+  /* === Card hover effects === */
+  .feat-card-hover {
+    transition:
+      border-color 300ms ease,
+      box-shadow 300ms ease;
+  }
+
+  .feat-card-hover:hover {
+    border-color: rgba(0, 230, 197, 0.3);
+    box-shadow: 0 0 20px rgba(0, 230, 197, 0.05);
+  }
+
+  /* Hero card keeps its stronger glow on hover */
+  .hero-card.feat-card-hover:hover {
+    border-color: rgba(0, 230, 197, 0.5);
+    box-shadow: 0 0 40px rgba(0, 230, 197, 0.1);
   }
 
   /* === prefers-reduced-motion === */
   @media (prefers-reduced-motion: reduce) {
+    .feat-reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    .feat-reveal.is-visible {
+      animation-duration: 0.01ms;
+    }
+
     :global(.feature-card) {
       opacity: 1;
       transform: none;
       transition: none;
     }
 
-    .beam-container::before {
-      animation: none;
+    .feat-card-hover {
+      transition: none;
     }
-
-    /* Terminal shows static text (handled in JS too) */
   }
 </style>
 
@@ -304,6 +262,23 @@ const smallCards = [
 
   document.querySelectorAll('.feature-card').forEach((card) => {
     featureObserver.observe(card);
+  });
+
+  // === IntersectionObserver for .feat-reveal elements (header, etc.) ===
+  const featRevealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          featRevealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  document.querySelectorAll('.feat-reveal:not(.feature-card)').forEach((el) => {
+    featRevealObserver.observe(el);
   });
 
   // === Terminal typing animation ===
