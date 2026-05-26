@@ -102,13 +102,15 @@ const smallCards = [
               {/* Terminal content */}
               <div class="bg-[#111] p-4 md:p-5 min-h-[12rem]">
                 <pre
+                  id="terminal-output"
                   class="font-mono text-xs leading-relaxed text-text-muted"
                   aria-label="Security flow terminal output showing that private keys never cross the WebWorker boundary"
-                >{terminalLines.map((line) => (
+                  data-terminal-lines={JSON.stringify(terminalLines)}
+                >{/* Lines rendered by JS typing animation */}<noscript>{terminalLines.map((line) => (
                     <span class={line.accent === 'full' ? 'text-accent' : ''}>
                       {line.text}{'\n'}
                     </span>
-                  ))}</pre>
+                  ))}</noscript></pre>
               </div>
             </div>
           </div>
@@ -217,6 +219,8 @@ const smallCards = [
       transform: none;
       transition: none;
     }
+
+    /* Terminal shows static text (handled in JS too) */
   }
 </style>
 
@@ -237,4 +241,147 @@ const smallCards = [
   document.querySelectorAll('.feature-card').forEach((card) => {
     featureObserver.observe(card);
   });
+
+  // === Terminal typing animation ===
+  const terminalEl = document.getElementById('terminal-output');
+
+  const terminalLines: Array<{ text: string; accent: string | false }> = terminalEl
+    ? JSON.parse(terminalEl.dataset.terminalLines ?? '[]')
+    : [];
+
+  const CHAR_DELAY = 40;
+  const LINE_PAUSE = 200;
+  const INITIAL_DELAY = 800;
+
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  function renderStaticTerminal() {
+    if (!terminalEl) return;
+    terminalEl.replaceChildren();
+    terminalLines.forEach((line) => {
+      const span = document.createElement('span');
+      if (line.accent === 'full') {
+        span.className = 'text-accent';
+        span.textContent = line.text + '\n';
+      } else if (line.accent === 'arrows') {
+        // Highlight arrows within the line
+        const parts = line.text.split(/(-->|<--)/);
+        parts.forEach((part) => {
+          if (part === '-->' || part === '<--') {
+            const accentSpan = document.createElement('span');
+            accentSpan.className = 'text-accent';
+            accentSpan.textContent = part;
+            span.appendChild(accentSpan);
+          } else {
+            span.appendChild(document.createTextNode(part));
+          }
+        });
+        span.appendChild(document.createTextNode('\n'));
+      } else {
+        span.textContent = line.text + '\n';
+      }
+      terminalEl.appendChild(span);
+    });
+  }
+
+  // Collect all timeout IDs for cleanup
+  const timeoutIds: number[] = [];
+
+  // Cleanup on Astro View Transitions navigation
+  document.addEventListener('astro:before-preparation', () => {
+    timeoutIds.forEach(clearTimeout);
+  });
+
+  if (prefersReducedMotion) {
+    renderStaticTerminal();
+  } else {
+    // Typing animation triggered on viewport entry
+    let animationStarted = false;
+
+    const heroCard = document.querySelector('.hero-card');
+    if (heroCard && terminalEl) {
+      const terminalObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !animationStarted) {
+              animationStarted = true;
+              terminalObserver.unobserve(entry.target);
+              timeoutIds.push(setTimeout(() => startTypingAnimation(), INITIAL_DELAY));
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      terminalObserver.observe(heroCard);
+    }
+
+    function startTypingAnimation() {
+      if (!terminalEl) return;
+      terminalEl.replaceChildren();
+
+      let totalDelay = 0;
+
+      terminalLines.forEach((line, lineIndex) => {
+        const lineDelay = totalDelay;
+
+        // Schedule character-by-character typing for this line
+        const chars = line.text.split('');
+        let lineSpan: HTMLSpanElement | null = null;
+
+        chars.forEach((char, charIndex) => {
+          timeoutIds.push(setTimeout(() => {
+            if (!terminalEl?.isConnected) return;
+
+            if (!lineSpan) {
+              lineSpan = document.createElement('span');
+              if (line.accent === 'full') {
+                lineSpan.className = 'text-accent';
+              }
+              terminalEl.appendChild(lineSpan);
+            }
+
+            // For arrow lines, handle accent coloring of arrows
+            if (line.accent === 'arrows') {
+              const textSoFar = line.text.substring(0, charIndex + 1);
+              // Clear and re-render with accent spans
+              lineSpan.replaceChildren();
+              const parts = textSoFar.split(/(-->|<--)/);
+              parts.forEach((part) => {
+                if (!lineSpan) return;
+                if (part === '-->' || part === '<--') {
+                  const accentSpan = document.createElement('span');
+                  accentSpan.className = 'text-accent';
+                  accentSpan.textContent = part;
+                  lineSpan.appendChild(accentSpan);
+                } else if (part === '-' || part === '->' || part === '<' || part === '<-') {
+                  // Partial arrow — render as normal text
+                  lineSpan.appendChild(document.createTextNode(part));
+                } else {
+                  lineSpan.appendChild(document.createTextNode(part));
+                }
+              });
+            } else {
+              lineSpan.textContent = line.text.substring(0, charIndex + 1);
+            }
+          }, lineDelay + charIndex * CHAR_DELAY));
+        });
+
+        totalDelay += chars.length * CHAR_DELAY + LINE_PAUSE;
+
+        // Add newline after this line finishes
+        timeoutIds.push(setTimeout(() => {
+          if (!terminalEl?.isConnected) return;
+          if (lineSpan) {
+            lineSpan.appendChild(document.createTextNode('\n'));
+          }
+          // After last line, mark as complete (for accessibility)
+          if (lineIndex === terminalLines.length - 1 && terminalEl) {
+            terminalEl.setAttribute('data-animation-complete', 'true');
+          }
+        }, lineDelay + chars.length * CHAR_DELAY));
+      });
+    }
+  }
 </script>
