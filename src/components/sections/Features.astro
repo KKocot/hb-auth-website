@@ -73,6 +73,15 @@ const smallCards = [
         class="feature-card hero-card relative col-span-1 lg:col-span-2 overflow-hidden rounded-xl border border-accent/30 bg-bg-card p-8 md:p-10 opacity-0"
         style="--stagger-delay: 0ms; --translate-y: 24px"
       >
+        {/* Border beam pseudo-element overlay */}
+        <div class="beam-container" aria-hidden="true"></div>
+
+        {/* Radial gradient background */}
+        <div
+          class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_80%_50%,rgba(0,230,197,0.04),transparent)]"
+          aria-hidden="true"
+        />
+
         <div class="relative flex flex-col lg:flex-row gap-8 lg:gap-10">
           {/* Left: Text content */}
           <div class="flex flex-col justify-center lg:w-1/2">
@@ -193,6 +202,57 @@ const smallCards = [
 </section>
 
 <style>
+  /* === @property registration for beam angle === */
+  @property --beam-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  /* === Border beam effect === */
+  .hero-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .beam-container {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .beam-container::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 80%,
+      rgba(0, 230, 197, 0.6) 90%,
+      transparent 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: beam-rotate 6s linear infinite;
+  }
+
+  @keyframes beam-rotate {
+    to {
+      --beam-angle: 360deg;
+    }
+  }
+
   /* === Scroll animation === */
   :global(.feature-card) {
     transition:
@@ -218,6 +278,10 @@ const smallCards = [
       opacity: 1;
       transform: none;
       transition: none;
+    }
+
+    .beam-container::before {
+      animation: none;
     }
 
     /* Terminal shows static text (handled in JS too) */
