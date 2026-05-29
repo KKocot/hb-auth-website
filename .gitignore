@@ -5,3 +5,7 @@ dist/
 .env.*
 !.env.example
 .vercel
+
+# macOS
+.DS_Store
+**/.DS_Store
